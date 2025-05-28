@@ -1,6 +1,6 @@
 {
   "name": "@drainpixie/jaro",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "a small string distance algorithm",
   "license": "LGPL-3.0",
@@ -25,11 +25,12 @@
     "access": "public"
   },
   "keywords": [
-    "undostack",
-    "undo",
-    "stack",
-    "history",
-    "state"
+    "jaro",
+    "jaro-winkler",
+    "string",
+    "distance",
+    "algorithm",
+    "similarity"
   ],
   "devDependencies": {
     "@eslint/compat": "^1.2.9",
