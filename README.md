@@ -21,13 +21,3 @@ jaroWinkler("dwayne", "duane"); // 0.8400000000000001
 nix develop
 pnpm install
 ```
-
-<details>
-  <summary>dependencies for contributors</summary>
-  
-  ```sh
-  cargo install --locked koji
-  corepack use pnpm
-  ```
-
-</details>
