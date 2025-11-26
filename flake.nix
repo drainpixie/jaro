@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,15 +24,18 @@
     devShells = forEachSupportedSystem ({
       pkgs,
       system,
-    }: {
+    }: let
+      check = self.checks.${system}.pre-commit;
+    in {
       default = pkgs.mkShell {
-        inherit (self.checks.${system}.pre-commit) shellHook;
+        inherit (check) shellHook;
 
-        packages =
-          builtins.attrValues {
-            inherit (pkgs.nodePackages) nodejs pnpm typescript typescript-language-server;
-          }
-          ++ self.checks.${system}.pre-commit.enabledPackages;
+        buildInputs =
+          check.enabledPackages
+          ++ (builtins.attrValues {
+            inherit (pkgs) nodejs;
+            inherit (pkgs.nodePackages) pnpm;
+          });
       };
     });
 
@@ -42,11 +45,12 @@
     }: {
       pre-commit = hooks.lib.${system}.run {
         src = ./.;
+        package = pkgs.prek;
 
         hooks = {
           eslint = {
             enable = true;
-            entry = "pnpx eslint";
+            entry = "pnpm eslint";
             files = "\\.(ts|js|tsx|jsx)$";
           };
 
@@ -56,6 +60,7 @@
           };
 
           convco.enable = true;
+          statix.enable = true;
           alejandra.enable = true;
         };
       };
